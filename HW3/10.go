@@ -35,7 +35,7 @@ type Fetcher interface {
 
 // Crawl uses fetcher to recursively crawl
 // pages starting with url, to a maximum of depth.
-func CrawlDfs(url string, depth int, fetcher Fetcher, quit chan bool, safeMap SafeUrlMap) {
+func CrawlDfs(url string, depth int, fetcher Fetcher, safeMap SafeUrlMap) {
 	// TODO: Fetch URLs in parallel.
 	// TODO: Don't fetch the same URL twice.
 	// This implementation doesn't do either:
@@ -56,19 +56,17 @@ func CrawlDfs(url string, depth int, fetcher Fetcher, quit chan bool, safeMap Sa
 		return
 	}
 	fmt.Printf("found: %s %q\n", url, body)
-	waitChannel := make(chan bool)
 	for _, u := range urls {
 		wg.Add(1)
-		go CrawlDfs(u, depth-1, fetcher, waitChannel, safeMap)
+		go CrawlDfs(u, depth-1, fetcher, safeMap)
 	}
 	return
 }
 
 func Crawl() {
-	quit := make(chan bool)
 	u := SafeUrlMap{fetchedUrls: map[string]bool{}, mu: &sync.Mutex{}}
 	wg.Add(1)
-	go CrawlDfs("https://golang.org/", 4, fetcher, quit, u)
+	go CrawlDfs("https://golang.org/", 4, fetcher, u)
 	wg.Wait()
 }
 
