@@ -1,2 +1,2 @@
-#HW4
+HW4
 I decided to make a small API from which I will receive data about the participants of the competition. The current standings will be displayed in the console every 5 seconds. In the table you can see the participant's handle, his current amount of points scored, as well as his new rating after participating in the competition. In addition, penalty points are assigned every second, thereby simulating a change in the proposed new rating.
