@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+option go_package = "example/api";
+package api;
+
+service UserService {
+  rpc GetAll(Empty) returns (UserList);
+  rpc Get(UserRequestId) returns (User);
+  rpc Insert(User) returns (User);
+  rpc Update(User) returns (User);
+  rpc Remove(UserRequestId) returns (Empty);
+}
+
+message UserList {
+  repeated User users = 1;
+}
+
+message UserRequestId {
+  int64 id = 1;
+}
+
+message User {
+  int64 id = 1;
+  string handle = 2;
+  string country = 3;
+  string city = 4;
+  int64 rating = 5;
+  int64 maxRating = 6;
+  string avatar = 7;
+}
+
+message Empty {}
+
+service SubmissionService {
+  rpc GetAll(Empty) returns (SubmissionList);
+  rpc Get(SubmissionRequestId) returns (Submission);
+  rpc Insert(Submission) returns (Submission);
+  rpc Update(Submission) returns (Submission);
+  rpc Remove(SubmissionRequestId) returns (Empty);
+}
+
+message SubmissionList {
+  repeated Submission submissions = 1;
+}
+
+message SubmissionRequestId {
+  int64 id = 1;
+}
+
+message SubmissionResult {
+  int64 verdict = 1;
+  int64 failedTest = 2;
+}
+
+message Submission {
+  int64 id = 1;
+  string date = 2;
+  int64 authorId = 3;
+  int64 problemId = 4;
+  SubmissionResult submissionResult = 5;
+}
